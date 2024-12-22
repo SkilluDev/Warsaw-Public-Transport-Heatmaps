@@ -8,5 +8,5 @@ for typeName in types:
         data = json.load(jsonFile)
     map_object = folium.Map(location=[52.24,21.02], zoom_start=10)
     HeatMap(data,name=typeName,min_opacity=0.2,max_zoom=10, radius=50, blur=30).add_to(map_object)
-    map_object.save("pages/"+typeName+"HeatMap.html")
+    map_object.save("docs/"+typeName+"HeatMap.html")
 
