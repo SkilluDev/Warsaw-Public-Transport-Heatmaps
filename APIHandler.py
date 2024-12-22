@@ -144,7 +144,7 @@ def saveHeatMapData(dataType):
     heatMapData = []
     mypath='jsons/'
     onlyfiles = [f for f in os.listdir(mypath) if isfile(join(mypath, f))]
-    with open(dataType+"HeatMapData.json","w") as file:
+    with open('HeatMapData/'+dataType+"HeatMapData.json","w") as file:
         for j in onlyfiles:
             with open(mypath+j, 'r') as json_file:
                 data = json.load(json_file)
@@ -158,9 +158,9 @@ def saveHeatMapData(dataType):
                         pass
                     elif(dataType=="lBus" and i['values'][0]['value'][0]=='L'):
                         pass
-                    elif(dataType=="exBus" and (i['values'][0]['value'][0]=='5' or i['values'][0]['value'][0]=='4')):
+                    elif(dataType=="exBus" and len(i['values'][0]['value'])>2 and (i['values'][0]['value'][0]=='5' or i['values'][0]['value'][0]=='4')):
                         pass
-                    elif(dataType=="outBus" and (i['values'][0]['value'][0]=='7' or i['values'][0]['value'][0]=='8')):
+                    elif(dataType=="outBus" and len(i['values'][0]['value'])>2 and (i['values'][0]['value'][0]=='7' or i['values'][0]['value'][0]=='8')):
                         pass
                     elif(dataType=="nBus" and i['values'][0]['value'][0]=='N'):
                         pass
@@ -183,5 +183,7 @@ api_key = 'f4351042-0e62-4be2-98b1-aec20b878958'
 #fetch_and_save_data(api_url, api_id, api_key, 'przystanki')
 #fetch_data_from_json('przystanki', api_url_core, bus_lines_id, api_key)
 #fetch_and_analyze()
-saveHeatMapData("dBus")
+types = ["allTypes", "bus", "dBus", "exBus", "lBus", "nBus", "outBus", "tram"]
+for typeName in types:  
+    saveHeatMapData(typeName)
 
