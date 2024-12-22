@@ -1,0 +1,60 @@
+{
+    "result": [
+        {
+            "values": [
+                {
+                    "key": "linia",
+                    "value": "148"
+                }
+            ]
+        },
+        {
+            "values": [
+                {
+                    "key": "linia",
+                    "value": "E-1"
+                }
+            ]
+        },
+        {
+            "values": [
+                {
+                    "key": "linia",
+                    "value": "411"
+                }
+            ]
+        },
+        {
+            "values": [
+                {
+                    "key": "linia",
+                    "value": "507"
+                }
+            ]
+        },
+        {
+            "values": [
+                {
+                    "key": "linia",
+                    "value": "225"
+                }
+            ]
+        },
+        {
+            "values": [
+                {
+                    "key": "linia",
+                    "value": "N03"
+                }
+            ]
+        },
+        {
+            "values": [
+                {
+                    "key": "linia",
+                    "value": "N02"
+                }
+            ]
+        }
+    ]
+}

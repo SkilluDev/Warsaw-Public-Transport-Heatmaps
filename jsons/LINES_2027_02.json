@@ -1,0 +1,36 @@
+{
+    "result": [
+        {
+            "values": [
+                {
+                    "key": "linia",
+                    "value": "115"
+                }
+            ]
+        },
+        {
+            "values": [
+                {
+                    "key": "linia",
+                    "value": "525"
+                }
+            ]
+        },
+        {
+            "values": [
+                {
+                    "key": "linia",
+                    "value": "125"
+                }
+            ]
+        },
+        {
+            "values": [
+                {
+                    "key": "linia",
+                    "value": "N25"
+                }
+            ]
+        }
+    ]
+}
