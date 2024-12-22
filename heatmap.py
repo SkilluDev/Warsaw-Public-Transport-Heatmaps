@@ -2,7 +2,7 @@ import json
 import folium
 from folium.plugins import HeatMap
 
-types = ["allTypes", "bus", "dBus", "exBus", "lBus", "nBus", "outBus", "tram"]
+types = ["allTypes", "bus", "dBus", "exBus", "lBus", "nBus", "outBus", "tram", "stops", "setsOfStops"]
 for typeName in types:
     with open('HeatMapData/'+typeName+"HeatMapData"+".json", "r") as jsonFile:
         data = json.load(jsonFile)

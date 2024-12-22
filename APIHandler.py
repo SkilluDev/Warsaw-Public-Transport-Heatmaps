@@ -61,41 +61,7 @@ def fetch_and_save_bus_lines_data(api_url_core, apid_id, busStopId, busStopNr, a
         print(f"An error occurred: {e}")
 
 def sorttuple(e):
-    return e[0]
-def fetch_and_analyze():
-    mypath='jsons/'
-    onlyfiles = [f for f in os.listdir(mypath) if isfile(join(mypath, f))]
-    max = 0
-    resultlist = []
-    for j in onlyfiles:
-        with open('jsons/'+j, 'r') as json_file:
-            data = json.load(json_file)
-        if type(data['result'])!=str:
-            #dzienne=0
-            #for i in data['result']:
-            #    if (i['values'][0]['value'][0]=='L') and len(i['values'][0]['value'])>2:
-            #        dzienne+=1
-            #temp = (dzienne, j)
-            #print(temp)
-            #if(temp[0]!=0):
-            #    resultlist.append(temp)
-            
-            #normal
-            resultlist.append((len(data['result']),j));
-    
-        #if len(data['result'])>max and type(data['result'])!=str:
-         #   max = len(data['result'])
-          #  print(j)
-           # print(max)
-        #if len(data['result'])==max:
-         #   print(j)
-          #  print(max)
-    print('sorting')
-    #print(resultlist.sort(key=sorttuple))
-    #print(resultlist)
-
-    #plotting(resultlist)
-    return
+    return e[1]
 
 def plotting(data):
 
@@ -131,7 +97,6 @@ def plotting(data):
 
 
 def saveHeatMapData(dataType):
-    max = 0
     with open(f'przystanki.json', 'r') as json_file:
         stops = json.load(json_file)
     stopsCoords = {}
@@ -171,6 +136,110 @@ def saveHeatMapData(dataType):
                     heatMapData.append(stopsCoords.get(j[6:13]))
         json.dump(heatMapData, file)
     return
+def saveStopsHeatMapData():
+    with open(f'przystanki.json', 'r') as json_file:
+        stops = json.load(json_file)
+    heatMapData = []
+    for stop in stops['result']:
+        latitude = stop['values'][4]['value']
+        longitude = stop['values'][5]['value']
+        heatMapData.append([latitude,longitude])
+    with open('HeatMapData/'+"stops"+"HeatMapData.json","w") as file:
+        json.dump(heatMapData, file)
+    return
+def saveSetsOfStopsHeatMapData():
+    with open(f'przystanki.json', 'r') as json_file:
+        stops = json.load(json_file)
+    heatMapData = []
+    setsData = {}
+    busStopId = 0
+    for stop in stops['result']:
+        busStopId = stop['values'][0]['value']
+        latitude = stop['values'][4]['value']
+        longitude = stop['values'][5]['value']
+        if(busStopId in setsData):
+            setsData[busStopId].append([latitude,longitude])
+        else:
+            setsData[busStopId] = [[latitude, longitude]]
+    for stopSet in setsData:
+        sumLat = 0
+        sumLong = 0
+        for coords in setsData[stopSet]:
+            sumLat+=float(coords[0])
+            sumLong+=float(coords[1]) 
+        heatMapData.append([sumLat/len(setsData[stopSet]),sumLong/len(setsData[stopSet])])
+    with open('HeatMapData/'+"setsOfStops"+"HeatMapData.json","w") as file:
+        json.dump(heatMapData, file)
+    return
+def printData(dataType, complex=False):
+    resultData = []
+    mypath='jsons/'
+    onlyfiles = [f for f in os.listdir(mypath) if isfile(join(mypath, f))]
+    previousJ = ""
+    currentLines = []
+    for j in onlyfiles:
+        if(complex and previousJ[6:10]!=j[6:10]):
+            resultData.append((previousJ, len(set(currentLines))))
+            currentLines=[]
+        with open(mypath+j, 'r') as json_file:
+            data = json.load(json_file)
+        if type(data['result'])!=str:
+            for i in data['result']:
+                if(dataType=="allTypes"):
+                    pass
+                elif(dataType=="tram" and len(i['values'][0]['value'])<3):
+                    pass
+                elif(dataType=="bus" and len(i['values'][0]['value'])>2):
+                    pass
+                elif(dataType=="lBus" and i['values'][0]['value'][0]=='L'):
+                    pass
+                elif(dataType=="exBus" and len(i['values'][0]['value'])>2 and (i['values'][0]['value'][0]=='5' or i['values'][0]['value'][0]=='4')):
+                    pass
+                elif(dataType=="outBus" and len(i['values'][0]['value'])>2 and (i['values'][0]['value'][0]=='7' or i['values'][0]['value'][0]=='8')):
+                    pass
+                elif(dataType=="nBus" and i['values'][0]['value'][0]=='N'):
+                    pass
+                elif(dataType=="dBus" and i['values'][0]['value'][0]!='N'):
+                    pass
+                else:
+                    continue;
+                currentLines.append(i['values'][0]['value'])
+            if(not complex):
+                resultData.append((j, len(currentLines)))
+                currentLines=[]
+        previousJ=j
+    if(complex):
+        resultData.append((previousJ, len(set(currentLines))))
+        currentLines=[]
+    resultData.sort(key=sorttuple)
+    print("Top 10 for type: "+dataType+" -----------------------------")
+    print(resultData[-10:])
+    return
+
+def countStops():
+    resultData = []
+    mypath='jsons/'
+    onlyfiles = [f for f in os.listdir(mypath) if isfile(join(mypath, f))]
+    currentSum = 0
+    previousJ = ""
+    for j in onlyfiles:
+        with open(mypath+j, 'r') as json_file:
+            data = json.load(json_file)
+
+        if previousJ[6:10]==j[6:10]:
+            if type(data['result'])!=str:
+                currentSum+=1
+        else:
+            if previousJ!="":
+                resultData.append((previousJ, currentSum))
+            currentSum = 1
+
+        previousJ=j
+    resultData.append((previousJ, currentSum))
+    resultData.sort(key=sorttuple)
+    print("Top 10 most stops: "+" -----------------------------")
+    print(resultData[-10:])
+    return 
 
 
 # Example usage
@@ -184,6 +253,7 @@ api_key = 'f4351042-0e62-4be2-98b1-aec20b878958'
 #fetch_data_from_json('przystanki', api_url_core, bus_lines_id, api_key)
 #fetch_and_analyze()
 types = ["allTypes", "bus", "dBus", "exBus", "lBus", "nBus", "outBus", "tram"]
-for typeName in types:  
-    saveHeatMapData(typeName)
-
+#for typeName in types:  
+#    printData(typeName, complex)
+#countStops()
+saveSetsOfStopsHeatMapData()
