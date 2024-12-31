@@ -5,6 +5,7 @@ import requests
 import os
 import json
 import matplotlib.pyplot as plt
+import numpy as np
 
 # Create the /jsons directory if it doesn't exist
 os.makedirs('jsons', exist_ok=True)
@@ -63,13 +64,15 @@ def fetch_and_save_bus_lines_data(api_url_core, apid_id, busStopId, busStopNr, a
 def sorttuple(e):
     return e[1]
 
-def plotting(data):
+def plottingStops(data):
+
+
+    plt.style.use('Solarize_Light2')
 
     # Separate the tuples into x and y values
-    x_values = [x for x, y in data]
+    x_values = [y for x, y in data]
 
     value_counts = Counter(x_values)
-    print(value_counts)
     sumLines = 0;
     sumStops = 0;
     for x, y in value_counts.items():
@@ -80,20 +83,101 @@ def plotting(data):
     newXVal = list(value_counts.keys())
     newYVal = list(value_counts.values())
 
+    #for i in range(len(newXVal)):
+    #    print(str(newXVal[i])+" "+str(newYVal[i]))
+    func = lambda x: 2600*np.power(1.55,-(x-1))
+    funcx = np.arange(1,21)
+    funcy = func(funcx)
+    
+
     # Plot the data
-    plt.scatter(newXVal, newYVal)
+    plt.plot(funcx, funcy, color='rebeccapurple',alpha=0.5, zorder=5)
+    plt.scatter(newXVal, newYVal, c=newXVal, cmap='viridis', edgecolors='black', zorder=10)  # Uses a colormap
     plt.yscale('log')
     
     # Add labels and title
-    plt.xlabel('X-axis')
-    plt.ylabel('Y-axis')
-    plt.title('Ilość przystanków')
-    plt.legend()
-
+    plt.xlabel('# of lines')
+    plt.ylabel('# of stops')
+    plt.title('Y stops have X lines')
+    plt.xticks(newXVal, labels=newXVal)
+    ylabels=[2500,1500,1000, 500, 400, 300, 200, 100, 60, 40, 20, 10, 5, 1]
+    plt.yticks(ylabels, labels=ylabels)
+    plt.grid(visible=True,which="both",axis='both')
+    plt.legend([r"$y = 2600 \cdot \left( 1.55^{-\left(x-1\right)} \right)$", 'Data points'])
     # Show the plot
     plt.show()
     return
 
+def plottingSetsOfStops(data):
+
+
+    plt.style.use('Solarize_Light2')
+
+    # Separate the tuples into x and y values
+    x_values = [y for x, y in data]
+
+    value_counts = Counter(x_values)
+    sumLines = 0;
+    sumStops = 0;
+    for x, y in value_counts.items():
+        sumLines+=x*y
+    print(sumLines/len(data))
+    
+
+    newXVal = list(value_counts.keys())
+    newYVal = list(value_counts.values())
+    
+    total=0
+    totalSets=0
+    for i in range(len(newXVal)):
+        print(str(newXVal[i])+" "+str(newYVal[i]))
+        totalSets+=newYVal[i]
+        total+=newXVal[i]*newYVal[i]
+    print("Total stops:" +str(total))
+    print("Total Sets of Stops:"+str(totalSets))
+    func = lambda x: 1000*np.power(1.8,-(x-1))
+    funcx = np.arange(0,22)
+    funcy = func(funcx)
+    
+
+    # Plot the data
+    plt.plot(funcx, funcy, color='rebeccapurple',alpha=0.5, zorder=5)
+    plt.scatter(newXVal, newYVal, c=newXVal, cmap='viridis', edgecolors='black', zorder=10)  # Uses a colormap
+    #plt.yscale('log')
+    
+    # Add labels and title
+    plt.xlabel('# of stops')
+    plt.ylabel('# of Sets of Stops')
+    plt.title('Y Sets of Stops consist of X stops')
+    plt.xticks(newXVal, labels=newXVal)
+    ylabels=[2000, 1000, 500, 400, 300, 200, 100, 20]
+    plt.yticks(ylabels, labels=ylabels)
+    plt.grid(visible=True,which="both",axis='both')
+    plt.legend([r"$y = 1000 \cdot \left( 1.8^{-\left(x-1\right)} \right)$", 'Data points'])
+    # Show the plot
+    plt.show()
+    return
+
+def plotStops():
+    resultData = []
+    mypath='jsons/'
+    onlyfiles = [f for f in os.listdir(mypath) if isfile(join(mypath, f))]
+    currentLines=[]
+    for j in onlyfiles:
+        with open(mypath+j, 'r') as json_file:
+            data = json.load(json_file)
+        if type(data['result'])!=str:
+            for i in data['result']:
+                currentLines.append(i['values'][0]['value'])
+            resultData.append((j, len(currentLines)))
+            currentLines=[]
+    resultData.sort(key=sorttuple)
+    plottingStops(resultData)
+    return
+
+def plotSetsOfStops():
+    plottingSetsOfStops(countStops())
+    return
 
 
 def saveHeatMapData(dataType):
@@ -129,7 +213,7 @@ def saveHeatMapData(dataType):
                         pass
                     elif(dataType=="nBus" and i['values'][0]['value'][0]=='N'):
                         pass
-                    elif(dataType=="dBus" and i['values'][0]['value'][0]!='N'):
+                    elif(dataType=="dBus" and i['values'][0]['value'][0]!='N' and len(i['values'][0]['value'])>2):
                         pass
                     else:
                         continue;
@@ -171,6 +255,7 @@ def saveSetsOfStopsHeatMapData():
     with open('HeatMapData/'+"setsOfStops"+"HeatMapData.json","w") as file:
         json.dump(heatMapData, file)
     return
+
 def printData(dataType, complex=False):
     resultData = []
     mypath='jsons/'
@@ -199,7 +284,7 @@ def printData(dataType, complex=False):
                     pass
                 elif(dataType=="nBus" and i['values'][0]['value'][0]=='N'):
                     pass
-                elif(dataType=="dBus" and i['values'][0]['value'][0]!='N'):
+                elif(dataType=="dBus" and i['values'][0]['value'][0]!='N' and len(i['values'][0]['value'])>2):
                     pass
                 else:
                     continue;
@@ -239,7 +324,7 @@ def countStops():
     resultData.sort(key=sorttuple)
     print("Top 10 most stops: "+" -----------------------------")
     print(resultData[-10:])
-    return 
+    return resultData
 
 
 # Example usage
@@ -256,4 +341,7 @@ types = ["allTypes", "bus", "dBus", "exBus", "lBus", "nBus", "outBus", "tram"]
 #for typeName in types:  
 #    printData(typeName, complex)
 #countStops()
-saveSetsOfStopsHeatMapData()
+#saveSetsOfStopsHeatMapData()
+#plotStops()
+#plotSetsOfStops()
+printData("dBus", complex=True)
