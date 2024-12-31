@@ -192,7 +192,7 @@ Total Sets of Stops:2982
 60 1
 
 
-AUTOMATED DATA
+AUTOMATED UNFILTERED DATA
 [Average is X (Y including stops that don't have any)]
 DATA FOR STOPS: bus---------
 2.74 (2.50) avg
@@ -245,6 +245,52 @@ DATA FOR SOS: bus---------
 24 1
 28 1
 50 1
+DATA FOR STOPS: allD---------
+2.39 (2.34)
+0 119
+1 2949
+2 1510
+3 903
+4 530
+5 292
+6 203
+7 104
+8 92
+9 28
+10 17
+11 15
+12 26
+13 1
+14 2
+15 3
+DATA FOR SOS: allD---------
+2.94 (2.79) avg
+0 152
+1 1195
+2 578
+3 330
+4 201
+5 136
+6 104
+7 69
+8 53
+9 47
+10 28
+11 24
+12 20
+13 9
+14 3
+15 6
+16 6
+17 4
+18 8
+19 3
+20 1
+21 1
+22 2
+23 1
+24 1
+25 1
 DATA FOR STOPS: dBus---------
 2.25 (2.01) avg
 0 720

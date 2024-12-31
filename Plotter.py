@@ -59,7 +59,7 @@ def plottingStops(data, save=False, name=None):
     if(not save):
         plt.show()
     else:
-        plt.savefig("AutomatedGraphs/Lines/"+name+"AutomatedGraphLines.png")
+        plt.savefig("AutomatedGraphs/LinesWithZero/"+name+"AutomatedGraphLines.png")
         plt.close()
     return
 
@@ -161,7 +161,7 @@ def plottingLinesForSOS(data, save=False, name=None):
     if(not save):
         plt.show()
     else:
-        plt.savefig("AutomatedGraphs/LinesForSOS/"+name+"AutomatedGraphLinesForSOS.png")
+        plt.savefig("AutomatedGraphs/LinesForSOSWithZero/"+name+"AutomatedGraphLinesForSOS.png")
         plt.close()
     return
 
@@ -178,8 +178,7 @@ def plotLinesForSOS():
     return
 
 def automatePlotting(types):
-    print(types[1:])
-    for t in types[1:]:
+    for t in types:
         plottingStops(printData(t), save=True, name=t)
         plottingLinesForSOS(printData(t, complex=True), save=True, name=t)
     return
@@ -191,7 +190,7 @@ def printData(dataType, complex=False):
     previousJ = ""
     currentLines = []
     for j in onlyfiles:
-        if(complex and previousJ[6:10]!=j[6:10] and len(currentLines)!=0):
+        if(complex and previousJ[6:10]!=j[6:10]):
             resultData.append((previousJ, len(set(currentLines))))
             currentLines=[]
         with open(mypath+j, 'r') as json_file:
@@ -199,6 +198,8 @@ def printData(dataType, complex=False):
         if type(data['result'])!=str:
             for i in data['result']:
                 if(dataType=="allTypes"):
+                    pass
+                elif(dataType=="allD" and i['values'][0]['value'][0]!='N'):
                     pass
                 elif(dataType=="tram" and len(i['values'][0]['value'])<3):
                     pass
@@ -217,11 +218,11 @@ def printData(dataType, complex=False):
                 else:
                     continue;
                 currentLines.append(i['values'][0]['value'])
-            if(not complex and len(currentLines)!=0):
+            if(not complex):
                 resultData.append((j, len(currentLines)))
                 currentLines=[]
         previousJ=j
-    if(complex and len(currentLines)!=0):
+    if(complex):
         resultData.append((previousJ, len(set(currentLines))))
         currentLines=[]
     resultData.sort(key=sorttuple)
@@ -254,5 +255,5 @@ def countStops():
     print(resultData[-10:])
     return resultData
 
-types = ["allTypes", "bus", "dBus", "exBus", "lBus", "nBus", "outBus", "tram"]
-automatePlotting(types)
+types = ["allTypes", "bus", "allD", "dBus", "exBus", "lBus", "nBus", "outBus", "tram"]
+automatePlotting(["allD"])
