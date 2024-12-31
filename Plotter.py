@@ -59,7 +59,7 @@ def plottingStops(data, save=False, name=None):
     if(not save):
         plt.show()
     else:
-        plt.savefig("AutomatedGraphs/LinesWithZero/"+name+"AutomatedGraphLines.png")
+        plt.savefig("docs/AutomatedGraphs/LinesWithZero/"+name+"AutomatedGraphLines.png")
         plt.close()
     return
 
@@ -161,7 +161,7 @@ def plottingLinesForSOS(data, save=False, name=None):
     if(not save):
         plt.show()
     else:
-        plt.savefig("AutomatedGraphs/LinesForSOSWithZero/"+name+"AutomatedGraphLinesForSOS.png")
+        plt.savefig("docs/AutomatedGraphs/LinesForSOSWithZero/"+name+"AutomatedGraphLinesForSOS.png")
         plt.close()
     return
 
