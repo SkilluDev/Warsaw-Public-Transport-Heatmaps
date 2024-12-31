@@ -45,6 +45,9 @@
         img{
             width: 100%
         }
+        .info{
+            color: #3c3b39;
+        }
     </style>
 </head>
 <body>
@@ -66,10 +69,12 @@
         <p>Total Sets of Stops: 2982</p>
         <div class="instruction">
             <p>Some graphs were generated automatically so they might be less clear than the other ones. The ones I manually created have logarithmic scale versions as well as linear. Instead the automatic ones have a version where 0 is included and is not included.</p>
+            <p class="info">The hand-picked graphs have additionally an overlapping exponential function that closely resembles the data distribution. This was added because I found the exponential growth very fascinating and I wanted to see how comparable they are. It turned out that the data is very in line with the functions. I suppose that some corelations can be explained by the nature of a crossroad, where if on every intersection you can go either "left" or "right", the lines would diverge in a 8-4/4-2/2/2/2-1/1/1/1/1/1/1/1 manner. However this explanation is still kind of lacking and an approximation, and it might be that this is merely by accident. If someone has an idea about what the source of this familiarity might be, feel free to reach me @ SkilluPlayz.</p>
         </div>
+        <p style="height: 50px"></p>
         <div class="instruction">
             <p>This data is about lines on a singular stop.</p>
-            <p>[If the stops are grouped with "&&" they share the same bus lines and most probably are close to each other]</p>
+            <p>If the stops are grouped with "&&" they share the same bus lines and most probably are close to each other</p>
         </div>
         <h3>Most Bus Lines on One Stop</h3>
         <ol class="data-list">
