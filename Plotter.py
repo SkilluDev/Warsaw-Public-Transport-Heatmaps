@@ -11,6 +11,9 @@ def sorttuple(e):
 
 def plottingStops(data, save=False, name=None):
 
+    s = ""
+    if (name):
+        s=name
 
     plt.style.use('Solarize_Light2')
 
@@ -19,7 +22,7 @@ def plottingStops(data, save=False, name=None):
 
     value_counts = Counter(x_values)
     sumLines = 0;
-    sumStops = 0;
+    print("DATA FOR STOPS: "+s+"---------")
     for x, y in value_counts.items():
         sumLines+=x*y
     print(sumLines/len(data))
@@ -28,35 +31,35 @@ def plottingStops(data, save=False, name=None):
     newXVal = list(value_counts.keys())
     newYVal = list(value_counts.values())
 
-    #for i in range(len(newXVal)):
-    #    print(str(newXVal[i])+" "+str(newYVal[i]))
-    func = lambda x: 2600*np.power(1.55,-(x-1))
-    funcx = np.arange(1,21)
-    funcy = func(funcx)
-    
+    for i in range(len(newXVal)):
+        print(str(newXVal[i])+" "+str(newYVal[i]))
+    if(not save):
 
+        func = lambda x: 2600*np.power(1.55,-(x-1))
+        funcx = np.arange(1,21)
+        funcy = func(funcx)
+        plt.plot(funcx, funcy, color='rebeccapurple',alpha=0.5, zorder=5)
     # Plot the data
-    plt.plot(funcx, funcy, color='rebeccapurple',alpha=0.5, zorder=5)
     plt.scatter(newXVal, newYVal, c=newXVal, cmap='viridis', edgecolors='black', zorder=10)  # Uses a colormap
     #plt.yscale('log')
     
     # Add labels and title
-    plt.xlabel('# of lines')
+    plt.xlabel(f'# of {s} lines')
     plt.ylabel('# of stops')
-    s = ""
-    if (name):
-        s=name
     plt.title(f'Y stops have X {s} lines')
     plt.xticks(newXVal, labels=newXVal)
     #ylabels=[2500,1500,1000, 500, 400, 300, 200, 100, 20]
     #plt.yticks(ylabels, labels=ylabels)
     plt.grid(visible=True,which="both",axis='both')
-    plt.legend([r"$y = 2600 \cdot \left( 1.55^{-\left(x-1\right)} \right)$", 'Data points'])
+    if(not save):
+        plt.legend([r"$y = 2600 \cdot \left( 1.55^{-\left(x-1\right)} \right)$", 'Data points'])
+    else:
+        plt.legend(['Data points'])
     # Show the plot
     if(not save):
         plt.show()
     else:
-        plt.savefig("AutomatedGraphs/"+name+"AutomatedGraphLines.png")
+        plt.savefig("AutomatedGraphs/Lines/"+name+"AutomatedGraphLines.png")
         plt.close()
     return
 
@@ -109,6 +112,10 @@ def plottingSetsOfStops(data):
     return
 
 def plottingLinesForSOS(data, save=False, name=None):
+
+    s = ""
+    if (name):
+        s=name
     plt.style.use('Solarize_Light2')
 
     # Separate the tuples into x and y values
@@ -117,6 +124,7 @@ def plottingLinesForSOS(data, save=False, name=None):
     value_counts = Counter(x_values)
     sumLines = 0;
     sumStops = 0;
+    print("DATA FOR SOS: "+s+"---------")
     for x, y in value_counts.items():
         sumLines+=x*y
     print(sumLines/len(data))
@@ -127,33 +135,33 @@ def plottingLinesForSOS(data, save=False, name=None):
 
     for i in range(len(newXVal)):
         print(str(newXVal[i])+" "+str(newYVal[i]))
-    func = lambda x: 450*np.power(1.3,-(x-1))
-    funcx = np.arange(0,61)
-    funcy = func(funcx)
-    
-
+    if(not save):
+        func = lambda x: 450*np.power(1.3,-(x-1))
+        funcx = np.arange(0,61)
+        funcy = func(funcx)
+        plt.plot(funcx, funcy, color='rebeccapurple',alpha=0.5, zorder=5)
     # Plot the data
-    plt.plot(funcx, funcy, color='rebeccapurple',alpha=0.5, zorder=5)
     plt.scatter(newXVal, newYVal, c=newXVal, cmap='viridis', edgecolors='black', zorder=10)  # Uses a colormap
     #plt.yscale('log')
     
     # Add labels and title
-    plt.xlabel('# of lines')
+    plt.xlabel(f'# of {s} lines')
     plt.ylabel('# of Sets of Stops')
-    s = ""
-    if (name):
-        s=name
+    
     plt.title(f'Y Sets of Stops have X {s} lines')
     plt.xticks(newXVal, labels=newXVal, fontsize="small")
     #ylabels=[1000, 500, 400, 300, 200, 100, 20]
     #plt.yticks(ylabels, labels=ylabels)
     plt.grid(visible=True,which="both",axis='both')
-    plt.legend([r"$y = 450 \cdot \left( 1.3^{-\left(x-1\right)} \right)$", 'Data points'])
     # Show the plot
+    if(not save):
+        plt.legend([r"$y = 450 \cdot \left( 1.3^{-\left(x-1\right)} \right)$", 'Data points'])
+    else:
+        plt.legend(['Data points'])
     if(not save):
         plt.show()
     else:
-        plt.savefig("AutomatedGraphs/"+name+"AutomatedGraphLinesForSOS.png")
+        plt.savefig("AutomatedGraphs/LinesForSOS/"+name+"AutomatedGraphLinesForSOS.png")
         plt.close()
     return
 
@@ -170,9 +178,10 @@ def plotLinesForSOS():
     return
 
 def automatePlotting(types):
+    print(types[1:])
     for t in types[1:]:
-        plottingStops(printData(t), save=True)
-        plottingLinesForSOS(printData(t, complex=True), save=True)
+        plottingStops(printData(t), save=True, name=t)
+        plottingLinesForSOS(printData(t, complex=True), save=True, name=t)
     return
 
 def printData(dataType, complex=False):
@@ -182,7 +191,7 @@ def printData(dataType, complex=False):
     previousJ = ""
     currentLines = []
     for j in onlyfiles:
-        if(complex and previousJ[6:10]!=j[6:10]):
+        if(complex and previousJ[6:10]!=j[6:10] and len(currentLines)!=0):
             resultData.append((previousJ, len(set(currentLines))))
             currentLines=[]
         with open(mypath+j, 'r') as json_file:
@@ -208,11 +217,11 @@ def printData(dataType, complex=False):
                 else:
                     continue;
                 currentLines.append(i['values'][0]['value'])
-            if(not complex):
+            if(not complex and len(currentLines)!=0):
                 resultData.append((j, len(currentLines)))
                 currentLines=[]
         previousJ=j
-    if(complex):
+    if(complex and len(currentLines)!=0):
         resultData.append((previousJ, len(set(currentLines))))
         currentLines=[]
     resultData.sort(key=sorttuple)

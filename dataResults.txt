@@ -1,0 +1,419 @@
+The data for this project was provided by the public Warsaw API at https://api.um.warszawa.pl/
+
+More bus facts and data can be found at
+https://warszawa.fandom.com/wiki/Autobusy
+and
+https://autobusy-wawa.fandom.com/pl/wiki/Autobusy_w_Warszawie
+and
+https://www.wtp.waw.pl/en/public-transport-step-by-step/
+
+
+
+Some data snippets and findings that I discovered while analyzing the data:
+
+[If the stops are grouped they share the same bus lines and most probably are close to each other]
+
+This data is about lines on a singular stop.
+
+Most bus lines on one stop:
+Centrum 06 - 26
+Emilii Plater 02 - 21
+Metro Świętokrzyska 03 - 18
+
+Most tram lines on one stop:
+Kijowska 04 - 8
+Rondo Radosława 10 - 7
+Goworka 02 - 7
+
+Most night bus lines on one stop:
+Emilii Plater 02 - 20
+Metro Świętokrzyska 03 - 17
+Centrum 06 - 15
+
+Most day bus lines on one stop:
+Plac Szembeka 01/02 - 15
+Os. Górczewska 03 - 15
+Wspólna Droga 01/02 - 14
+
+Most Out-Of-City Zone (7XX or 8XX) bus lines on one stop:
+Stoicka 01 && Szyszkowa 01/02 - 8
+(Raszyn) Sportowa 01 - 7
+Sójki 01 && Pelikanów 01/02 - 7
+
+Most express bus lines on one stop:
+Marszałkowska 01/02 && pl. na Rozdrożu 05/06 && Rozbrat 01/02 && Saska 01 - 6
+Dworzec Centralny 02 - 6
+Centrum 06 - 5
+pl. Konstytucji 01 - 5
+Płowiecka 03 - 5
+
+Most local (L-XX) bus lines on one stop:
+Piaseczno Zgoda 01 - 11
+PKP Piaseczno 02 - 11
+Piaseczno Urząd Miasta 03 - 11
+Piaseczno Szkolna 01 - 11
+
+This data is about Sets of Stops.
+
+Most lines on one Set of Stops:
+Dw. Centralny - 60
+Centrum - 37
+Dw Wileński - 30
+Kijowska - 29
+Metro Młociny - 28
+
+Most bus lines on one Set of Stops:
+Dw. Centralny - 50
+Centrum - 28
+Płowiecka - 24
+Emilii Plater - 22
+Rozbrat - 21
+
+Most day lines on one Set of Stops
+Kijowska - 25
+Dw. Centralny - 24
+Wiatraczna - 23
+Centrum - 22
+Metro Młociny - 22
+
+Most day bus lines on one Set of Stops
+Rozbrat - 18
+Płowiecka - 18
+pl. na Rozdrożu - 17
+rondo Zesłańców Syberyjskich - 17
+Saska - 17
+Wiatraczna - 17
+
+Most night lines on one Set of Stops
+Dw. Centralny - 36
+Emilii Plater - 21
+Metro Świętokrzyska - 18
+Centrum - 15
+Rondo ONZ - 13
+
+Most active stops on one Set of Stops
+Metro Młociny - 23
+Dw. Centralny - 18
+Wiatraczna - 17
+Metro Marymont - 16
+pl. Wilsona - 15
+P+R Al. Krakowska - 14
+Metro Wilanowska - 13
+Dw. Wschodni(Kijowska) - 13
+Żerań FSO - 13
+Metro Bródno - 12
+
+Exact data
+Total stops:7009
+Total Sets of Stops:2982
+
+
+# lines per stop
+2.83 avg
+
+1 2596
+2 1385
+3 901
+4 700
+5 392
+6 319
+7 160
+8 152
+9 49
+10 32
+11 38
+12 18
+13 21
+14 13
+15 7
+16 3
+17 4
+18 2
+21 1
+26 1
+
+
+# stops per set of stops
+2.35 avg
+
+1 559
+2 1752
+3 273
+4 210
+5 62
+6 61
+7 18
+8 18
+9 8
+10 7
+11 4
+12 1
+13 2
+14 2
+15 1
+16 1
+17 1
+18 1
+23 1
+
+
+# lines per Set of Stops
+
+3.57
+1 1086
+2 519
+3 297
+4 241
+5 149
+6 122
+7 88
+8 79
+9 54
+10 34
+11 39
+12 35
+13 19
+14 18
+15 12
+16 8
+17 6
+18 5
+19 5
+20 2
+21 9
+22 5
+23 3
+24 2
+25 2
+28 1
+29 1
+30 1
+37 1
+60 1
+
+
+AUTOMATED DATA
+[Average is X (Y including stops that don't have any)]
+DATA FOR STOPS: bus---------
+2.74 (2.50) avg
+0 597
+1 2512
+2 1265
+3 798
+4 589
+5 342
+6 259
+7 137
+8 124
+9 45
+10 29
+11 36
+12 9
+13 21
+14 13
+15 7
+16 3
+17 4
+18 2
+21 1
+26 1
+DATA FOR SOS: bus---------
+3.22 (3.04) avg
+0 172
+1 1088
+2 538
+3 306
+4 248
+5 170
+6 125
+7 81
+8 73
+9 51
+10 31
+11 21
+12 15
+13 13
+14 14
+15 9
+16 8
+17 5
+18 3
+19 2
+20 2
+21 4
+22 1
+24 1
+28 1
+50 1
+DATA FOR STOPS: dBus---------
+2.25 (2.01) avg
+0 720
+1 2863
+2 1394
+3 795
+4 420
+5 243
+6 143
+7 73
+8 64
+9 25
+10 14
+11 14
+12 20
+13 1
+14 2
+15 3
+DATA FOR SOS: dBus---------
+2.60 (2.42) avg
+0 200
+1 1218
+2 605
+3 348
+4 199
+5 133
+6 95
+7 54
+8 37
+9 36
+10 11
+11 12
+12 10
+13 10
+14 5
+15 2
+16 2
+17 4
+18 2
+DATA FOR STOPS: exBus---------
+1.43 (0.16) avg
+0 6052
+1 540
+2 138
+3 32
+4 16
+5 8
+6 8
+DATA FOR SOS: exBus---------
+1.60 (0.18) avg
+0 2655
+1 212
+2 75
+3 22
+4 8
+5 4
+6 5
+7 1
+8 1
+DATA FOR STOPS: lBus---------
+1.47 (0.34) avg
+0 5214
+1 1160
+2 271
+3 91
+4 21
+5 10
+6 9
+7 8
+8 3
+10 2
+11 5
+DATA FOR SOS: lBus---------
+1.55 (0.45) avg
+0 2123
+1 612
+2 156
+3 53
+4 12
+5 7
+6 6
+7 5
+8 2
+10 1
+11 5
+12 1
+DATA FOR STOPS: nBus---------
+1.56 (0.49) avg
+0 4674
+1 1407
+2 451
+3 176
+4 37
+5 29
+6 3
+7 11
+9 1
+10 1
+12 1
+15 1
+17 1
+20 1
+DATA FOR SOS: nBus---------
+1.74 (0.61) avg
+0 1934
+1 656
+2 227
+3 89
+4 42
+5 17
+6 4
+7 5
+8 1
+9 1
+10 2
+13 1
+15 1
+18 1
+21 1
+36 1
+DATA FOR STOPS: outBus---------
+1.65 (0.37) avg
+0 5255
+1 978
+2 331
+3 131
+4 39
+5 33
+6 7
+7 17
+8 3
+DATA FOR SOS: outBus---------
+1.69 (0.46) avg
+0 2179
+1 498
+2 180
+3 70
+4 20
+5 20
+6 4
+7 9
+8 3
+DATA FOR STOPS: tram---------
+3.71 (0.33) avg
+0 6183
+1 87
+2 125
+3 109
+4 111
+5 55
+6 60
+7 23
+8 28
+9 3
+10 3
+11 1
+12 6
+DATA FOR SOS: tram---------
+4.30 (0.37) avg
+0 2726
+1 16
+2 52
+3 51
+4 42
+5 22
+6 33
+7 15
+8 12
+9 2
+10 5
+12 6
+15 1
