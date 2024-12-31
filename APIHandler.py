@@ -158,25 +158,58 @@ def plottingSetsOfStops(data):
     plt.show()
     return
 
+def plottingLinesForSOS(data):
+    plt.style.use('Solarize_Light2')
+
+    # Separate the tuples into x and y values
+    x_values = [y for x, y in data]
+
+    value_counts = Counter(x_values)
+    sumLines = 0;
+    sumStops = 0;
+    for x, y in value_counts.items():
+        sumLines+=x*y
+    print(sumLines/len(data))
+    
+
+    newXVal = list(value_counts.keys())
+    newYVal = list(value_counts.values())
+
+    for i in range(len(newXVal)):
+        print(str(newXVal[i])+" "+str(newYVal[i]))
+    func = lambda x: 2600*np.power(1.8,-(x-1))
+    funcx = np.arange(1,21)
+    funcy = func(funcx)
+    
+
+    # Plot the data
+    plt.plot(funcx, funcy, color='rebeccapurple',alpha=0.5, zorder=5)
+    plt.scatter(newXVal, newYVal, c=newXVal, cmap='viridis', edgecolors='black', zorder=10)  # Uses a colormap
+    plt.yscale('log')
+    
+    # Add labels and title
+    plt.xlabel('# of lines')
+    plt.ylabel('# of stops')
+    plt.title('Y stops have X lines')
+    plt.xticks(newXVal, labels=newXVal)
+    ylabels=[2500,1500,1000, 500, 400, 300, 200, 100, 60, 40, 20, 10, 5, 1]
+    plt.yticks(ylabels, labels=ylabels)
+    plt.grid(visible=True,which="both",axis='both')
+    plt.legend([r"$y = 2600 \cdot \left( 1.55^{-\left(x-1\right)} \right)$", 'Data points'])
+    # Show the plot
+    plt.show()
+    return
+
 def plotStops():
-    resultData = []
-    mypath='jsons/'
-    onlyfiles = [f for f in os.listdir(mypath) if isfile(join(mypath, f))]
-    currentLines=[]
-    for j in onlyfiles:
-        with open(mypath+j, 'r') as json_file:
-            data = json.load(json_file)
-        if type(data['result'])!=str:
-            for i in data['result']:
-                currentLines.append(i['values'][0]['value'])
-            resultData.append((j, len(currentLines)))
-            currentLines=[]
-    resultData.sort(key=sorttuple)
-    plottingStops(resultData)
+    plottingStops(printData("allTypes"))
     return
 
 def plotSetsOfStops():
     plottingSetsOfStops(countStops())
+    return
+
+def plotLinesForSOS():
+    plottingLinesForSOS(printData("allTypes", complex=True))
     return
 
 
@@ -220,6 +253,7 @@ def saveHeatMapData(dataType):
                     heatMapData.append(stopsCoords.get(j[6:13]))
         json.dump(heatMapData, file)
     return
+
 def saveStopsHeatMapData():
     with open(f'przystanki.json', 'r') as json_file:
         stops = json.load(json_file)
@@ -231,6 +265,7 @@ def saveStopsHeatMapData():
     with open('HeatMapData/'+"stops"+"HeatMapData.json","w") as file:
         json.dump(heatMapData, file)
     return
+
 def saveSetsOfStopsHeatMapData():
     with open(f'przystanki.json', 'r') as json_file:
         stops = json.load(json_file)
@@ -297,9 +332,9 @@ def printData(dataType, complex=False):
         resultData.append((previousJ, len(set(currentLines))))
         currentLines=[]
     resultData.sort(key=sorttuple)
-    print("Top 10 for type: "+dataType+" -----------------------------")
-    print(resultData[-10:])
-    return
+    #print("Top 10 for type: "+dataType+" -----------------------------")
+    #print(resultData[-10:])
+    return resultData
 
 def countStops():
     resultData = []
@@ -344,4 +379,5 @@ types = ["allTypes", "bus", "dBus", "exBus", "lBus", "nBus", "outBus", "tram"]
 #saveSetsOfStopsHeatMapData()
 #plotStops()
 #plotSetsOfStops()
-printData("dBus", complex=True)
+plotLinesForSOS()
+#printData("dBus", complex=True)
